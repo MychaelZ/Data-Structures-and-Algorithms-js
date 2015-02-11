@@ -1,4 +1,4 @@
-var Node = function (data, val1, val2) { //Binary Tree Node
+var Node = function (data, val1, val2) {
     this.data = data;
     this.left;
     this.right;
@@ -9,26 +9,29 @@ var Node = function (data, val1, val2) { //Binary Tree Node
     if (typeof val2 !== 'undefined') {
         this.append(val2)
     };
-}
+};
 
 Node.prototype = {
     show: function () {
         return this.data;
     },
+
     append: function (node) {
         this.data > node.data ? this.left = node : this.right = node;
     },
+
     showChildren: function () {
         var children = [];
         (typeof this.left !== 'undefined') ? children.push(this.left.data) : children.push(null);
         (typeof this.right !== 'undefined') ? children.push(this.right.data) : children.push(null);
         return children;
     }
-}
+
+};
 
 var BinaryTree = function (root) {
     this.root = (typeof root !== 'object') ? new Node(root) : root;
-}
+};
 
 BinaryTree.prototype = {
     find: function (n) {
@@ -41,6 +44,7 @@ BinaryTree.prototype = {
         }
         return false;
     },
+
     findParent: function (data) {
         var start = this.root;
         if (typeof this.find(data) === 'object') {
@@ -51,26 +55,27 @@ BinaryTree.prototype = {
         }
         return false;
     },
+
     insert: function (node) {
         var start = this.root;
         if (typeof node !== 'object') {
             node = new Node(node);
         }
-        if (typeof this.root === 'undefined') {
+        if (typeof start === 'undefined') {
             this.root = node;
             return node;
         }
         while (typeof start !== 'undefined') {
-            if(start.data > node.data) {
+            if (start.data > node.data) {
                 if (typeof start.left !== 'undefined') {
-                start = start.left;
+                    start = start.left;
                 } else {
                     start.left = node;
                     break;
                 }
             } else { 
                 if (typeof start.right !== 'undefined') {
-                start = start.right;
+                    start = start.right;
                 } else {
                     start.right = node;
                     break;
@@ -78,12 +83,14 @@ BinaryTree.prototype = {
             }
         }
     },
-    update: function (n) {
+
+    increment: function (n) {
         var node = this.find(n);
         if (node) {
             node.count++
         };
     },
+
     inOrder: function (node) { //traverses tree ascending order
         if (typeof node !== 'undefined') {
             BinaryTree.prototype.inOrder(node.left);
@@ -91,6 +98,7 @@ BinaryTree.prototype = {
             BinaryTree.prototype.inOrder(node.right);
         }
     },
+
     preOrder: function (node) { //traverses tree from root to children
         if (typeof node !== 'undefined') {
             console.log(node.show());
@@ -98,6 +106,7 @@ BinaryTree.prototype = {
             BinaryTree.prototype.preOrder(node.right);
         }
     },
+
     postOrder: function (node) { //traverses tree from children of left sub tree and right sub tree to root
         if (typeof node !== 'undefined') {
             BinaryTree.prototype.postOrder(node.left);
@@ -105,6 +114,7 @@ BinaryTree.prototype = {
             console.log(node.show())
         }
     },
+
     getMin: function (start) {
         var start = start || this.root;
         while (typeof start.left !== 'undefined') {
@@ -112,6 +122,7 @@ BinaryTree.prototype = {
         }
         return start.data;
     },
+
     getMax: function (start) {
         var start = start || this.root;
         while (typeof start.right !== 'undefined') {
@@ -119,25 +130,20 @@ BinaryTree.prototype = {
         }
         return start.data;
     },
+
     remove: function (data) {
-        var node = this.findParent(data),
-            deadNode,
-            rightSide;
+        var node = this.findParent(data), deadNode;
         if (typeof node === 'object') {
             if (typeof node.right !== 'undefined' && node.right.data === data) {
                 deadNode = node.right;
-                rightSide = true;
-            } else {
-                deadNode = node.left;
-                rightSide = false;
-            }
-            if (rightSide) {
                 node.right = deadNode.left ? deadNode.left : deadNode.right;
             } else {
+                deadNode = node.left;
                 node.left = deadNode.right ? deadNode.right : deadNode.left;
             }
         }
     },
+
     displayTree: function () {
         var tree = [this.root];
         while (tree.some(function (node) {return (node !== null)})) {
@@ -153,10 +159,11 @@ BinaryTree.prototype = {
                     newTree.push(null);
                     newTree.push(null);
                 }
-            })
+            });
             tree = newTree;
         }
     },
+
     length: function () {
         var count = 0,
             tree = [this.root];
@@ -175,7 +182,7 @@ BinaryTree.prototype = {
         }
         return count;
     }
-}
+};
 
 
 var n1 = new Node(56);

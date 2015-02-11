@@ -1,32 +1,36 @@
-function arrayMaker(size) {
+var arrayMaker = function (size) {
     this.data = [];
     this.pos = 0;
     for (var i = 0; i < size; i++) {
         this.data[i] = i;
     }
-}
+};
 
 arrayMaker.prototype = {
     insert: function (el) {
         this.data[this.data.length] = el;
     },
+
     swap: function (ind1, ind2) {
         var el1 = this.data[ind1], 
             el2 = this.data[ind2];
         this.data[ind1] = el2;
         this.data[ind2] = el1;
     },
+
     clear: function () {
         for (var i = 0; i < this.data.length; i++) {
             this.data[i] = 0;
         }
     },
+
     setData: function () {
         var size = this.data.length, i;
-        for (i = 0; i < this.data.length; i++) {
-            this.data[i] = Math.floor(Math.random() * (this.data.length + 1));
+        for (i = 0; i < size; i++) {
+            this.data[i] = Math.floor(Math.random() * (size + 1));
         }
     },
+
     toString: function () {
         var str = '', i;
         for (i = 0; i < this.data.length; i++) {
@@ -37,19 +41,21 @@ arrayMaker.prototype = {
         }
         return str;
     },
-    bubbleSort: function () {
+
+    bubbleSort: function () { 
         var sorted = true, i;
-        while (sorted) {
-          sorted = false;
+        while (!sorted) {
+          sorted = true;
           for (i = 0; i < this.data.length - 1; i++) {
               if (this.data[i] > this.data[i + 1]) {
-                  sorted = true;
+                  sorted = false;
                   this.swap(i, i + 1);
               }
           }
         }
         return this.data;
     },
+
     selectionSort: function () {
         var smallest,
             index,
@@ -70,6 +76,7 @@ arrayMaker.prototype = {
         }
         return this.data;
     },
+
     insertSort: function () {
         var temp, i = 1;
         for (; i < this.data.length; i++) {
@@ -83,6 +90,7 @@ arrayMaker.prototype = {
         }
         return this.data;
     },
+
     shellSort: function () {
         var gap = 5, i, j;
         for (; gap >= 1; gap -= 2) {
@@ -96,6 +104,7 @@ arrayMaker.prototype = {
         }
         return this.data;
     },
+
     mergeSort: function () {
         var i, container = [], 
             sort = function (arr1, arr2) {
@@ -118,6 +127,7 @@ arrayMaker.prototype = {
         this.data = container[0];
         return this.data;
     },
+
     quickSort: function (arr) {
         var arr = arr || this.data,
             pivot, i = 1, left = [], right = [];
@@ -127,6 +137,38 @@ arrayMaker.prototype = {
             (pivot < arr[i]) ? right.push(arr[i]) : left.push(arr[i]);
         }
         return this.quickSort(left).concat(pivot, this.quickSort(right));
+    },
+
+    binSearch: function (item) {
+        this.selectionSort();
+        var data = this.data, 
+            upper = data.length,
+            lower = 0,
+            mid = Math.floor((upper + lower)/2);
+        while (mid > 1) {
+            if (data[mid] > item) {
+                upper = mid;
+            } else if (data[mid] < item) {
+                lower = mid;
+            } else {
+                return mid;
+            }
+            mid = Math.floor((upper + lower)/2);
+        }
+        return data[mid] === item ? mid : -1;
+    },
+
+    numberOf: function (item) {
+        var index = this.binSearch(item),
+            i = index,
+            count = -1;
+        for (; this.data[i] === item; i--) {
+            count++;
+        };
+        for (i = index; this.data[i] === item; i++) {
+            count++;
+        };
+        return count;
     },
     test: function (method) {
         var sumOfMils = 0,
@@ -142,7 +184,7 @@ arrayMaker.prototype = {
         }
         return sumOfMils / 100;
     }
-} 
+};
 
 var arr = new arrayMaker(100);
 arr.setData();

@@ -1,19 +1,19 @@
 var letterCase = function (str) {
-  return str.split('').map(function (char) {
-      return (/[a-z]/i.test(char)) ? char.toLowerCase().charCodeAt() - 96 : char;
-  }).join('');
-}
+    return str.split('').map(function (char) {
+        return (/[a-z]/i.test(char)) ? char.toLowerCase().charCodeAt() - 96 : char;
+    }).join('');
+};
 
 var matrixGen = function (rows, colums, vals) {
     var arr = [], i, j;
     for (i = 0; i < rows; i++) {
         arr[i] = [];
         for (j = 0; j < colums; j++) {
-          arr[i][j] = vals;
+            arr[i][j] = vals;
         }
     }
     return arr;
-}
+};
 
 var grades = [[65,78,89],[54,78,86],[67,89,76]];
 
@@ -23,17 +23,21 @@ var findMatrixLength = function (arr) {
         total += col.length
     });
     return total;
-}
+};
 
 var sum = function (a,b) {
     return a + b;
-}
+};
+
+var totalMatrixVals = function (matrix) {
+    return matrix.map(function (row) {return row.reduce(sum);}).reduce(sum);
+};
 
 var classAvg = function (grades) {
     var numOfTests = findMatrixLength(grades),
-        total = grades.map(function (arr) {return arr.reduce(sum)}).reduce(sum);
+        total = totalMatrixVals(grades);
     return (total/numOfTests).toFixed(2);
-}
+};
 
 var studentAvg = function (grades) {
     var id = 0;
@@ -41,7 +45,7 @@ var studentAvg = function (grades) {
           id++;
           return 'Student ' + id + ' average score is ' + (arr.reduce(sum)/arr.length).toFixed(2);
       });
-}
+};
 
 var testAvg = function (grades) {
     var tests = [], i, j,
@@ -58,7 +62,7 @@ var testAvg = function (grades) {
 
 var weekTemps = function () {
     this.dataStore = [];
-}
+};
 
 weekTemps.prototype = {
     weekAverage: function (wk) {
@@ -66,8 +70,7 @@ weekTemps.prototype = {
     },
 
     weeksAverage: function () {
-        var weeks = [],
-            n = 0;
+        var weeks = [], n = 0;
         this.dataStore
             .map(function (wk) {
               return (wk.reduce(sum) / wk.length).toFixed(2)
@@ -84,7 +87,7 @@ weekTemps.prototype = {
         this.dataStore.forEach(function (wk) {
             numOfDays += wk.length;
         });
-        return (this.dataStore.map(function (wk) { return wk.reduce(sum)}).reduce(sum)/numOfDays).toFixed(2);
+        return (totalMatrixVals(this.dataStore)/numOfDays).toFixed(2);
     },
 
     add: function (temp) {
@@ -93,7 +96,7 @@ weekTemps.prototype = {
         } else {
             this.dataStore[this.dataStore.length - 1].push(temp);
         }
-    };
+    }
 };
 
 var week = new weekTemps();
